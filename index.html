@@ -284,19 +284,19 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
     <div class="wrap" style="max-width:820px">
       <p class="eyebrow">Pricing</p>
       <h2>How much does gutter cleaning cost in Austin?</h2>
-      <p style="margin-top:.8rem;color:var(--muted)">Here are my real prices. Every price includes hand-cleaning every gutter, flushing every downspout and hauling off all debris. No minimums and no surprise fees.</p>
+      <p style="margin-top:.8rem;color:var(--muted)">Here are my starting prices. Every price includes hand-cleaning every gutter, flushing every downspout and hauling off all debris. No minimums and no surprise fees.</p>
       <div class="tablebox">
         <table class="cal" style="margin-top:1.2rem">
           <thead><tr><th>Home</th><th>Route day (Tue to Thu)</th><th>Within 24 hours</th></tr></thead>
           <tbody>
-            <tr><td>One story</td><td><strong>$225</strong></td><td>$275</td></tr>
-            <tr><td>Two story</td><td><strong>$275</strong></td><td>$350</td></tr>
+            <tr><td>One story</td><td><strong>From $225</strong></td><td>From $275</td></tr>
+            <tr><td>Two story</td><td><strong>From $275</strong></td><td>From $350</td></tr>
             <tr><td>Gutter guards</td><td>+$50</td><td>+$50</td></tr>
             <tr><td>Three stories or more</td><td colspan="2">Custom quote, same day</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="fine" style="margin-top:.8rem">What changes the price: how many stories, whether you have gutter guards, and how soon you need it. That's it.</p>
+      <p class="fine" style="margin-top:.8rem">What changes the price: how many stories, whether you have gutter guards, how soon you need it, and where you are in Austin. Your exact price shows in the instant quote.</p>
     </div>
   </section>
 
@@ -397,7 +397,13 @@ const CONFIG = {
   calLink: "https://cal.com/studentgutter/route-day",        // Tue-Thu route-day booking
   calLinkStd: "https://cal.com/studentgutter/gutter-cleaning", // Mon, Fri, Sat booking
   prices: { 1: { standard: 275, route: 225 }, 2: { standard: 350, route: 275 } },
-  guardFee: 50
+  guardFee: 50,
+  // Price added by zip (distance from downtown). Not shown as a separate fee.
+  zones: {
+    0:  ["78701","78702","78703","78704","78705","78751","78756"],
+    25: ["78731","78746","78757","78745","78735","78749","78759"],
+    50: ["78750","78730","78733","78739","78738","78734"]
+  }
 };
 /* ================================== */
 
@@ -428,6 +434,7 @@ $("qform").addEventListener("submit", e => {
   if(q.phone.replace(/\D/g,"").length < 10) missing.push("a 10-digit mobile number");
   if(!/^\S+@\S+\.\S+$/.test(q.email)) missing.push("an email");
   if(q.addr.length < 6) missing.push("your address");
+  else if(!/\b7\d{4}\b/.test(q.addr)) missing.push("the zip code in your address");
   if(!q.stories) missing.push("how many stories");
   if(!q.guards) missing.push("whether you have guards");
   if(missing.length){ $("q-err").textContent = "Please add " + missing.join(", ") + "."; return; }
@@ -453,6 +460,11 @@ function run(q){
   requestAnimationFrame(tick);
 }
 
+function zoneAdd(addr){
+  const m = addr.match(/\b(7\d{4})\b/); if(!m) return null;
+  for(const [add, zips] of Object.entries(CONFIG.zones)) if(zips.includes(m[1])) return +add;
+  return null;
+}
 function show(q){
   $("q-work").hidden = true; $("q-result").hidden = false;
   const first = q.name.split(" ")[0];
@@ -465,7 +477,17 @@ function show(q){
     return;
   }
   const p = CONFIG.prices[q.stories];
-  const extra = q.guards === "yes" ? CONFIG.guardFee : 0;
+  const zAdd = zoneAdd(q.addr);
+  if(zAdd === null){
+    $("q-work").hidden = true; $("q-result").hidden = false;
+    $("q-hello").textContent = `Thanks, ${q.name.split(" ")[0]}. Let me price your area.`;
+    $("q-summary").textContent = q.addr;
+    $("q-offers").innerHTML = `<div class="offer best" style="grid-column:1/-1"><span class="tag">Custom quote</span>
+      <p>Your address is outside my usual route. Text me and I'll send your price the same day.</p>
+      <p class="phone-line">${phoneText}</p></div>`;
+    return;
+  }
+  const extra = (q.guards === "yes" ? CONFIG.guardFee : 0) + zAdd;
   const route = p.route + extra, std = p.standard + extra, saved = std - route;
   $("q-hello").textContent = `Thanks, ${first}. Here's your price.`;
   $("q-summary").textContent = `${q.addr} · ${q.stories === "2" ? "Two story" : "One story"} · ${q.guards === "yes" ? "Gutter guards (+" + money(CONFIG.guardFee) + ")" : q.guards === "no" ? "No guards" : "Guards: I'll check when I arrive"}`;
