@@ -394,7 +394,7 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
 /* ===== Settings: change these ===== */
 const CONFIG = {
   phone: "(469) 560-0001",       // business number shown on the site
-  calLink: "",                   // Cal.com booking link, e.g. "https://cal.com/studentgutter/gutter-cleaning"
+  calLink: "https://cal.com/gage-humbarger-f5v4ce/gutter-cleaning", // Cal.com booking link
   prices: { 1: { standard: 275, route: 225 }, 2: { standard: 350, route: 275 } },
   guardFee: 50
 };
@@ -409,7 +409,7 @@ function val(name){ const el = document.querySelector('input[name="'+name+'"]:ch
 
 function bookUrl(q, price){
   if(!CONFIG.calLink) return "";
-  const notes = `Address: ${q.addr}\nPhone: ${q.phone}\nStories: ${q.stories}\nGutter guards: ${q.guards}\nQuoted route-day price: ${money(price)}`;
+  const notes = `Address: ${q.addr}\nPhone: ${q.phone}\nStories: ${q.stories}\nGutter guards: ${q.guards}\nQuoted price: ${money(price)}`;
   const u = new URL(CONFIG.calLink);
   u.searchParams.set("name", q.name);
   u.searchParams.set("email", q.email);
@@ -476,15 +476,15 @@ function show(q){
       <span class="tag">Route day · Tue, Wed, Thu</span>
       <div><span class="was">${money(std)}</span><span class="price">${money(route)}</span></div>
       <p class="save">You save ${money(saved)}. I'm already out working your area those days.</p>
-      <p>Pick an open 2-hour window on my calendar.</p>
+      <p>Pick an open Tue, Wed or Thu time on my calendar.</p>
       ${bookBtn}
     </div>
     <div class="offer">
-      <span class="tag alt">ASAP · within 24 hours</span>
+      <span class="tag alt">Mon, Fri, Sat · or ASAP</span>
       <div><span class="price">${money(std)}</span></div>
-      <p>Standard price. I'll fit you in within 24 hours, any day.</p>
-      <p>Text me to book:</p>
-      <p class="phone-line">${phoneText}</p>
+      <p>Standard price. Book a Monday, Friday or Saturday online, or text me and I'll fit you in within 24 hours.</p>
+      ${url ? `<a class="btn btn-ghost" href="${bookUrl(q, std)}" target="_blank" rel="noopener">Book Mon, Fri or Sat</a>` : ""}
+      <p class="phone-line">Text: ${phoneText}</p>
     </div>`;
   if(q.guards === "unsure") $("q-offers").insertAdjacentHTML("beforeend", `<p class="fine" style="grid-column:1/-1">If you do have guards, it's ${money(CONFIG.guardFee)} more. I'll confirm before I start.</p>`);
 }
