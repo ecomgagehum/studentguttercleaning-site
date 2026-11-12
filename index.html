@@ -394,7 +394,8 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
 /* ===== Settings: change these ===== */
 const CONFIG = {
   phone: "(469) 560-0001",       // business number shown on the site
-  calLink: "https://cal.com/gage-humbarger-f5v4ce/gutter-cleaning", // Cal.com booking link
+  calLink: "https://cal.com/studentgutter/route-day",        // Tue-Thu route-day booking
+  calLinkStd: "https://cal.com/studentgutter/gutter-cleaning", // Mon, Fri, Sat booking
   prices: { 1: { standard: 275, route: 225 }, 2: { standard: 350, route: 275 } },
   guardFee: 50
 };
@@ -407,10 +408,11 @@ $("foot-phone").textContent = CONFIG.phone ? "Call or text " + CONFIG.phone : ""
 
 function val(name){ const el = document.querySelector('input[name="'+name+'"]:checked'); return el ? el.value : ""; }
 
-function bookUrl(q, price){
-  if(!CONFIG.calLink) return "";
+function bookUrl(q, price, link){
+  link = link || CONFIG.calLink;
+  if(!link) return "";
   const notes = `Address: ${q.addr}\nPhone: ${q.phone}\nStories: ${q.stories}\nGutter guards: ${q.guards}\nQuoted price: ${money(price)}`;
-  const u = new URL(CONFIG.calLink);
+  const u = new URL(link);
   u.searchParams.set("name", q.name);
   u.searchParams.set("email", q.email);
   u.searchParams.set("notes", notes);
@@ -483,7 +485,7 @@ function show(q){
       <span class="tag alt">Mon, Fri, Sat · or ASAP</span>
       <div><span class="price">${money(std)}</span></div>
       <p>Standard price. Book a Monday, Friday or Saturday online, or text me and I'll fit you in within 24 hours.</p>
-      ${url ? `<a class="btn btn-ghost" href="${bookUrl(q, std)}" target="_blank" rel="noopener">Book Mon, Fri or Sat</a>` : ""}
+      ${url ? `<a class="btn btn-ghost" href="${bookUrl(q, std, CONFIG.calLinkStd)}" target="_blank" rel="noopener">Book Mon, Fri or Sat</a>` : ""}
       <p class="phone-line">Text: ${phoneText}</p>
     </div>`;
   if(q.guards === "unsure") $("q-offers").insertAdjacentHTML("beforeend", `<p class="fine" style="grid-column:1/-1">If you do have guards, it's ${money(CONFIG.guardFee)} more. I'll confirm before I start.</p>`);
