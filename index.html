@@ -78,6 +78,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 form{display:grid;gap:14px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .row2>*{min-width:0}
+.row-addr{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.row-addr>*{min-width:0}
 label.f{display:grid;gap:6px;font-weight:600;font-size:.92rem}
 input[type=text],input[type=tel],input[type=email]{width:100%;font:inherit;padding:.75rem .85rem;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
 fieldset{border:0;padding:0;margin:0;display:grid;gap:8px}
@@ -217,7 +219,10 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
             <label class="f" for="q-phone">Mobile number<input id="q-phone" type="tel" autocomplete="tel" placeholder="(512) 555-0100" required></label>
           </div>
           <label class="f" for="q-email">Email<input id="q-email" type="email" autocomplete="email" placeholder="you@email.com" required></label>
-          <label class="f" for="q-addr">Home address<input id="q-addr" type="text" autocomplete="street-address" placeholder="4205 Bamford Dr, Austin, TX 78731" required></label>
+          <div class="row-addr">
+            <label class="f" for="q-addr">Street address<input id="q-addr" type="text" autocomplete="street-address" placeholder="4205 Bamford Dr" required></label>
+            <label class="f" for="q-zip">Zip code<input id="q-zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="78731" required></label>
+          </div>
           <fieldset>
             <legend>How many stories?</legend>
             <div class="opts">
@@ -425,16 +430,25 @@ function bookUrl(q, price, link){
   return u.toString();
 }
 
+$("q-addr").addEventListener("input", () => {
+  const m = $("q-addr").value.match(/\b(7\d{4})\b/);
+  if(m && !$("q-zip").value) $("q-zip").value = m[1];
+});
+$("q-zip").addEventListener("input", e => { e.target.value = e.target.value.replace(/\D/g,"").slice(0,5); });
 $("qform").addEventListener("submit", e => {
   e.preventDefault();
   const q = { name: $("q-name").value.trim(), phone: $("q-phone").value.trim(), email: $("q-email").value.trim(),
               addr: $("q-addr").value.trim(), stories: val("stories"), guards: val("guards") };
+  const zipIn = $("q-zip").value.replace(/\D/g,"");
+  const zipInAddr = (q.addr.match(/\b(7\d{4})\b/)||[])[1];
+  const zip = zipIn.length === 5 ? zipIn : zipInAddr;
+  if(zip && !q.addr.includes(zip)) q.addr = q.addr.replace(/[,\s]+$/,"") + (/austin|tx|texas/i.test(q.addr) ? " " : ", TX ") + zip;
   const missing = [];
   if(!q.name) missing.push("your name");
   if(q.phone.replace(/\D/g,"").length < 10) missing.push("a 10-digit mobile number");
   if(!/^\S+@\S+\.\S+$/.test(q.email)) missing.push("an email");
-  if(q.addr.length < 6) missing.push("your address");
-  else if(!/\b7\d{4}\b/.test(q.addr)) missing.push("the zip code in your address");
+  if($("q-addr").value.trim().length < 4) missing.push("your street address");
+  if(!zip) missing.push("a 5-digit zip code");
   if(!q.stories) missing.push("how many stories");
   if(!q.guards) missing.push("whether you have guards");
   if(missing.length){ $("q-err").textContent = "Please add " + missing.join(", ") + "."; return; }
