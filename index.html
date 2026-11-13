@@ -206,8 +206,9 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
         <div class="route">
           <strong>I work set route days.</strong>
           <p class="fine">I clean gutters around Austin every Tuesday, Wednesday and Thursday. Booking one of those days costs less because I'm already out in your area.</p>
+          <p class="fine"><strong style="color:var(--ink)">This Saturday, Nov 14, only:</strong> Saturday gets the route-day price too. I'm out before Sunday's rain.</p>
           <div class="days" aria-label="Route days">
-            <span>Mon</span><span class="on">Tue</span><span class="on">Wed</span><span class="on">Thu</span><span>Fri</span>
+            <span>Mon</span><span class="on">Tue</span><span class="on">Wed</span><span class="on">Thu</span><span>Fri</span><span class="on">Sat</span>
           </div>
         </div>
       </div>
@@ -292,7 +293,7 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
       <p style="margin-top:.8rem;color:var(--muted)">Here are my starting prices. Every price includes hand-cleaning every gutter, flushing every downspout and hauling off all debris. No minimums and no surprise fees.</p>
       <div class="tablebox">
         <table class="cal" style="margin-top:1.2rem">
-          <thead><tr><th>Home</th><th>Route day (Tue to Thu)</th><th>Within 24 hours</th></tr></thead>
+          <thead><tr><th>Home</th><th>Route day (Tue to Thu, plus Sat Nov 14)</th><th>Within 24 hours</th></tr></thead>
           <tbody>
             <tr><td>One story</td><td><strong>From $225</strong></td><td>From $275</td></tr>
             <tr><td>Two story</td><td><strong>From $275</strong></td><td>From $350</td></tr>
@@ -460,7 +461,7 @@ function run(q){
   $("qform").hidden = true; $("q-result").hidden = true; $("q-work").hidden = false;
   const storyText = q.stories === "3" ? "Three or more stories" : (q.stories === "2" ? "Two story home" : "One story home");
   const guardText = q.guards === "yes" ? "Gutter guards: yes" : q.guards === "no" ? "Gutter guards: none" : "Gutter guards: I'll check on site";
-  const steps = ["Reading your address", storyText, guardText, "Checking my Tue–Thu route days", "Calculating your price"];
+  const steps = ["Reading your address", storyText, guardText, "Checking my route days", "Calculating your price"];
   $("q-steps").innerHTML = steps.map(s => "<li>"+s.replace(/[<>&]/g,"")+"</li>").join("");
   const items = [...$("q-steps").children];
   const total = 10000, t0 = performance.now();
@@ -511,17 +512,17 @@ function show(q){
     : `<span class="btn btn-main" aria-disabled="true">Pick my time</span><p class="fine">Online booking opens soon. Text me to book: <span class="phone-line">${phoneText}</span></p>`;
   $("q-offers").innerHTML = `
     <div class="offer best">
-      <span class="tag">Route day · Tue, Wed, Thu</span>
+      <span class="tag">This Sat 11/14 · Tue, Wed, Thu</span>
       <div><span class="was">${money(std)}</span><span class="price">${money(route)}</span></div>
       <p class="save">You save ${money(saved)}. I'm already out working your area those days.</p>
-      <p>Pick an open Tue, Wed or Thu time on my calendar.</p>
+      <p>Grab a spot this Saturday, Nov 14, or any open Tue, Wed or Thu.</p>
       ${bookBtn}
     </div>
     <div class="offer">
-      <span class="tag alt">Mon, Fri, Sat · or ASAP</span>
+      <span class="tag alt">Mon or Fri · or ASAP</span>
       <div><span class="price">${money(std)}</span></div>
-      <p>Standard price. Book a Monday, Friday or Saturday online, or text me and I'll fit you in within 24 hours.</p>
-      ${url ? `<a class="btn btn-ghost" href="${bookUrl(q, std, CONFIG.calLinkStd)}" target="_blank" rel="noopener">Book Mon, Fri or Sat</a>` : ""}
+      <p>Standard price. Book a Monday or Friday online, or text me and I'll fit you in within 24 hours.</p>
+      ${url ? `<a class="btn btn-ghost" href="${bookUrl(q, std, CONFIG.calLinkStd)}" target="_blank" rel="noopener">Book Mon or Fri</a>` : ""}
       <p class="phone-line">Text: ${phoneText}</p>
     </div>`;
   if(q.guards === "unsure") $("q-offers").insertAdjacentHTML("beforeend", `<p class="fine" style="grid-column:1/-1">If you do have guards, it's ${money(CONFIG.guardFee)} more. I'll confirm before I start.</p>`);
