@@ -160,6 +160,8 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:1.3rem}.svc{background:var(--card,#fff);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:16px;display:grid;gap:6px}.svc b{font-size:1.05rem}.svc span{color:var(--muted);font-size:.95rem}.svc a{font-weight:700;color:var(--leaf);text-decoration:none}
+.svc-tabs{display:flex;gap:8px;overflow-x:auto;padding-block:0 10px;scrollbar-width:none}.svc-tabs::-webkit-scrollbar{display:none}.svc-tabs a{flex:0 0 auto;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:.9rem;background:var(--bg)}.svc-tabs a:hover{border-color:var(--leaf);color:var(--leaf)}
+#guards,#windows{scroll-margin-top:130px}
 </style>
 </head>
 <body>
@@ -173,13 +175,18 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
     </a>
     <a class="btn btn-main" href="#quote">Get my instant quote</a>
   </div>
+  <nav class="wrap svc-tabs" aria-label="Services">
+    <a href="#quote">Gutter cleaning</a>
+    <a href="#guards">Guards</a>
+    <a href="#windows">Windows</a>
+  </nav>
 </header>
 
 <main id="top">
   <div class="wrap hero">
     <div>
       <p class="eyebrow">Austin, TX · Student-run</p>
-      <h1>Gutter cleaning in Austin. That's all I do.</h1>
+      <h1>Gutter cleaning in Austin. Plus gutter guards and windows.</h1>
       <p class="lead">I hand-clean every gutter, flush every downspout so it actually drains, and haul off every leaf. You get before and after photos when I'm done.</p>
       <div class="ctas">
         <a class="btn btn-main" href="#quote">Get my instant quote</a>
@@ -268,8 +275,8 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
       <p style="margin-top:1rem;font-size:1.1rem;color:var(--muted)">I'm already up on the ladder, so I can handle your gutters, guards and windows in one visit, from the same local guy.</p>
       <div class="svc-grid">
         <div class="svc"><b>Gutter cleaning</b><span>Every gutter hand-cleaned, downspouts flushed, before and after photos texted.</span><a href="#quote">Instant quote →</a></div>
-        <div class="svc"><b>Window cleaning, inside &amp; out</b><span>All hand-cleaned with a scrubber and squeegee, inside and out. Screens, tracks and frames too.</span><a href="tel:+14695600001">Text or call (469) 560-0001 for a quote →</a></div>
-        <div class="svc"><b>Gutter guard installs</b><span>Guards cut to fit your gutters so leaves stay out and water keeps flowing.</span><a href="tel:+14695600001">Text or call (469) 560-0001 for a quote →</a></div>
+        <div class="svc" id="windows"><b>Window cleaning, inside &amp; out</b><span>Interior and exterior, all hand-cleaned with a scrubber and squeegee. No water-fed pole. Screens, tracks and frames included.</span><a href="tel:+14695600001">Text or call (469) 560-0001 for a quote →</a></div>
+        <div class="svc" id="guards"><b>Gutter guard installs</b><span>Guards cut to fit your gutters so leaves stay out and water keeps flowing. <strong>A full gutter cleaning is included free with every install.</strong></span><a href="tel:+14695600001">Text or call (469) 560-0001 for a quote →</a></div>
       </div>
       <p style="margin-top:1.1rem;font-size:1.05rem;color:var(--ink);font-weight:600">Want to support a small local business? Let me be your gutter and window guy. Text <span style="white-space:nowrap">(469) 560-0001</span>.</p>
       <a class="btn btn-main" href="#quote" style="margin-top:1.2rem">Get my instant gutter quote</a>
@@ -358,7 +365,7 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
       <div>
         <p class="eyebrow">Who shows up</p>
         <h2>Hi, I'm Gage.</h2>
-        <p>I'm a student here in Austin, and I clean gutters. Just gutters. When you book, I'm the one who shows up, climbs the ladder and does the work. No sales rep and no crew you've never met.</p>
+        <p>I'm a student here in Austin. I clean gutters, install gutter guards and hand-clean windows. When you book, I'm the one who shows up, climbs the ladder and does the work. No sales rep and no crew you've never met.</p>
         <p>Same number every time. If something's not right, text me and I'll come back and fix it.</p>
         <p>Supporting a small local business means a lot. Thank you.</p>
       </div>
@@ -382,7 +389,7 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
       <details><summary>Do I need to be home?</summary><p>No. I just need access to the outside of the house. I'll text you before and after photos when I'm done.</p></details>
       <details><summary>Do you clean gutters that have guards?</summary><p>Yes. Guards still clog, especially under oaks. It's $50 extra because each guard has to be cleaned off or lifted to get to the gutter underneath.</p></details>
       <details><summary>Why is a Tuesday to Thursday booking cheaper?</summary><p>Those are my route days, when I'm already out working neighborhoods around Austin. Booking one of them saves me a trip, and I pass that on. If you need it done within 24 hours, I'll do that at the standard price.</p></details>
-      <details><summary>Do you install gutter guards or clean windows?</summary><p>Yes. I install gutter guards cut to fit your gutters, and I hand-clean windows inside and out, including screens, tracks and frames. Text or call (469) 560-0001 for a quote. I don't install new gutters.</p></details>
+      <details><summary>Do you install gutter guards or clean windows?</summary><p>Yes. I install gutter guards cut to fit your gutters, with a full gutter cleaning included free. I also hand-clean windows inside and out with a scrubber and squeegee (no water-fed pole), including screens, tracks and frames. Text or call (469) 560-0001 for a quote. I don't install new gutters.</p></details>
       <details><summary>How often should gutters be cleaned in Austin?</summary><p>Under big trees, twice a year: late fall after the pecans and elms drop, and spring after the live oak tassels. With few trees, once a year is usually enough.</p></details>
     </div>
   </section>
